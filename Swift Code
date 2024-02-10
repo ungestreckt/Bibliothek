@@ -1,0 +1,126 @@
+import SwiftUI
+
+struct BuchView: View {
+  @State var buecher: [Buch] = []
+  @State var selectedOption: Int = 0
+  
+  var body: some View {
+    NavigationView {
+      HStack {
+        // Navigationsleiste
+        NavigationSidebar(selection: $selectedOption) {
+          Button(action: { selectedOption = 0 }) {
+            Text("Suche nach Autor")
+          }
+          Button(action: { selectedOption = 1 }) {
+            Text("Suche nach Titel")
+          }
+          Button(action: { selectedOption = 2 }) {
+            Text("Anzahl der Bücher")
+          }
+          Button(action: { selectedOption = 3 }) {
+            Text("Alle Bücher anzeigen")
+          }
+          Button(action: { selectedOption = 4 }) {
+            Text("Alle Autoren anzeigen")
+          }
+        }
+        
+        // Inhalt
+        ZStack {
+          switch selectedOption {
+          case 0:
+            AutorSucheView(buecher: $buecher)
+          case 1:
+            TitelSucheView(buecher: $buecher)
+          case 2:
+            AnzahlBuecherView(buecher: $buecher)
+          case 3:
+            AlleBuecherView(buecher: $buecher)
+          case 4:
+            AlleAutorenView(buecher: $buecher)
+          default:
+            Text("Keine Option ausgewählt")
+          }
+        }
+      }
+    }
+  }
+}
+
+struct AutorSucheView: View {
+  @Binding var buecher: [Buch]
+  @State var name: String = ""
+  
+  var body: some View {
+    VStack {
+      TextField("Autor", text: $name)
+      Button(action: {
+        let gefundeneBuecher = sucheAutor(name)
+        buecher = gefundeneBuecher
+      }) {
+        Text("Suchen")
+      }
+      List(buecher, id: \.id) { buch in
+        Text(buch.titel)
+      }
+    }
+  }
+}
+
+struct TitelSucheView: View {
+  @Binding var buecher: [Buch]
+  @State var titel: String = ""
+  
+  var body: some View {
+    VStack {
+      TextField("Titel", text: $titel)
+      Button(action: {
+        let gefundeneBuecher = sucheTitel(titel)
+        buecher = gefundeneBuecher
+      }) {
+        Text("Suchen")
+      }
+      List(buecher, id: \.id) { buch in
+        Text(buch.titel)
+      }
+    }
+  }
+}
+
+struct AnzahlBuecherView: View {
+  @Binding var buecher: [Buch]
+  
+  var body: some View {
+    Text("Anzahl der Bücher: \(buecher.count)")
+  }
+}
+
+struct AlleBuecherView: View {
+  @Binding var buecher: [Buch]
+  
+  var body: some View {
+    List(buecher, id: \.id) { buch in
+      Text(buch.titel)
+    }
+  }
+}
+
+struct AlleAutorenView: View {
+  @Binding var buecher: [Buch]
+  
+  var body: some View {
+    List(autoren(buecher), id: \.id) { autor in
+      Text(autor)
+    }
+  }
+}
+
+@main
+struct BibliothekApp: App {
+  var body: some Scene {
+    WindowGroup {
+      BuchView()
+    }
+  }
+}
