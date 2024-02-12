@@ -7,7 +7,7 @@
 #include <unistd.h>
 
 using namespace std;
-
+void buecher_laden();
 bool loop = true;
 
 class Buch
@@ -196,6 +196,95 @@ void sonstiges()
         break;
     }
 }
+void hinzufuegen()
+{
+
+    string titel;
+    string vorname;
+    string nachname;
+    string herausgeber;
+    string uebersetzer;
+    string verlag;
+    string jahr;
+    string ort;
+    string auflage;
+    string untertitel;
+
+    system("clear");
+    cout << "Titel: ";
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    getline(cin, titel);
+
+    cout << endl
+         << "Vorname: ";
+    getline(cin, vorname);
+
+    cout << endl
+         << "Nachname: ";
+    getline(cin, nachname);
+
+    cout << endl
+         << "Herausgeber: ";
+    getline(cin, herausgeber);
+
+    cout << endl
+         << "Übersetzer: ";
+    getline(cin, uebersetzer);
+
+    cout << endl
+         << "Verlag: ";
+    getline(cin, verlag);
+
+    cout << endl
+         << "Jahr: ";
+    getline(cin, jahr);
+
+    cout << endl
+         << "Ort: ";
+    getline(cin, ort);
+
+    cout << endl
+         << "Auflage: ";
+    std::cin.clear();
+    getline(cin, auflage);
+
+    cout << endl
+         << "Untertitel: ";
+    getline(cin, untertitel);
+
+    ofstream ofs("Buecher.txt", ios::app);
+
+    if (untertitel == "-")
+    {
+        untertitel = "";
+    }
+
+    if (herausgeber == "-")
+    {
+        herausgeber = "";
+    }
+    if (uebersetzer == "-")
+    {
+        uebersetzer = "";
+    }
+    if (auflage == "-")
+    {
+        auflage = "";
+    }
+    ofs << "\n" << titel << "_" << vorname << "_" << nachname << "_" << herausgeber << "_" << uebersetzer << "_" << verlag << "_" << jahr << "_" << ort << "_" << auflage << "_" << untertitel;
+
+    
+    ofs.close();
+
+    cout << endl << "\x1B[34m---Hinzugefügt!---\033[0m" << endl;
+    usleep(2000);
+    buecher.clear();
+    cout << endl <<  buecher.size() << endl;
+    usleep(200);
+    buecher_laden();
+    usleep(2000);
+}
 void main_menu()
 {
     string loopweiter;
@@ -205,10 +294,10 @@ void main_menu()
     cout << "\033[3;43;30mImZeichen\033[0m" << endl;
     cout << "-----" << endl
          << endl;
-    cout << "Optionen:" << endl;
     cout << "\x1B[35m1\033[0m: Author Suchen" << endl;
     cout << "\x1B[93m2\033[0m: Titel Suchen" << endl;
-    cout << "3: Sonstiges" << endl
+    cout << "\x1B[34m3\033[0m: hinzufügen" << endl;
+    cout << "4: Sonstiges" << endl
          << endl;
     cout << "-----" << endl;
     cout << "Eingabe: ";
@@ -223,6 +312,9 @@ void main_menu()
         titel_suche();
         break;
     case 3:
+        hinzufuegen();
+        break;
+    case 4:
         sonstiges();
         break;
 
@@ -231,7 +323,7 @@ void main_menu()
         break;
     }
     cout << endl;
-    cout << "Nochmal?(j/n): ";
+    cout << "Hauptmenü?(j/n): ";
     cin >> loopweiter;
     if (loopweiter == "j")
     {
@@ -242,13 +334,14 @@ void main_menu()
         loop = false;
     }
 }
-int main()
-{
+
+void buecher_laden() {
     /* Irgendwo ist diese Datei aber ka wo, musst noch suchen (Pfad und so)
     ofstream myfile("example.txt");
     myfile << "test";
     myfile.close();
     */
+    buecher.clear();
     string ersteZeile;
     // Datei öffnen
     std::ifstream infile("Buecher.txt");
@@ -264,7 +357,7 @@ int main()
         std::string a, b, c, d, e, f, g, h, i, j;
 
         // Trennzeichen definieren
-        char delimiter = ',';
+        char delimiter = '_';
 
         // Extrahieren der Tokens
         std::getline(ss, a, delimiter);
@@ -284,6 +377,11 @@ int main()
 
     // Datei schließen
     infile.close();
+
+}
+int main()
+{
+    buecher_laden();
     while (loop)
     {
         system("clear");
@@ -296,7 +394,6 @@ int main()
     cout << "-----" << endl;
     cout << "     ---------------------     ";
 
-  
     usleep(2000000);
 
     return 0;
