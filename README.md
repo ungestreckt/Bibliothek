@@ -13,18 +13,4 @@ Beschreibung:
 Weitere Info:
 
 Es wird eine Datei im Pfad user/ angelegt (Buecher.txt). Die Bücher werden im Format titel_author_... gespeichert.
-Unterstricht dürfen beim hinzufügen der Bücher nicht verwendet werden.
-
-
-
-
-
-
-
-
-
-alpha: Bibliothek für Mac.
-
-.txt file beschreiben und in user/ Branch einfügen.
-
-Danach Programm starten.
+Unterstriche dürfen beim hinzufügen der Bücher nicht verwendet werden.
